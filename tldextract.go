@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-//used for Result.Flag
+// used for Result.Flag
 const (
 	Malformed = iota
 	Domain
@@ -96,6 +96,8 @@ func addTldRule(rootNode *Trie, labels []string, ex bool) {
 			newMap := make(map[string]*Trie)
 			t.matches[lab] = &Trie{ExceptRule: except, ValidTld: valid, matches: newMap}
 			m = t.matches[lab]
+		} else if found && numlabs == 1 {
+			t.matches[lab].ValidTld = true
 		}
 		t = m
 	}
@@ -190,7 +192,7 @@ func (extract *TLDExtract) getTldIndex(labels []string) (int, bool) {
 	return -1, false
 }
 
-//return sub domain,root domain
+// return sub domain,root domain
 func subdomain(d string) (string, string) {
 	ps := strings.Split(d, ".")
 	l := len(ps)
